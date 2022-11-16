@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPMS", "CPMS\CPMS.csproj", "{60D585AB-1E6B-44AB-AA06-FACB2E1D43C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPMS-test", "CPMS-test\CPMS-test.csproj", "{983A1F16-F8C9-480B-9F08-8B5663B0CDC6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60D585AB-1E6B-44AB-AA06-FACB2E1D43C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60D585AB-1E6B-44AB-AA06-FACB2E1D43C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60D585AB-1E6B-44AB-AA06-FACB2E1D43C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60D585AB-1E6B-44AB-AA06-FACB2E1D43C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{983A1F16-F8C9-480B-9F08-8B5663B0CDC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{983A1F16-F8C9-480B-9F08-8B5663B0CDC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{983A1F16-F8C9-480B-9F08-8B5663B0CDC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{983A1F16-F8C9-480B-9F08-8B5663B0CDC6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E3F9106-EF11-46BE-8A24-678F4174AABD}
+	EndGlobalSection
+EndGlobal
