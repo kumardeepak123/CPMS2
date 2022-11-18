@@ -69,6 +69,12 @@ namespace CPMS.Repository
             return await _CPMDbContext.Employees.Where(x => x.Id == id).FirstOrDefaultAsync();         
         }
 
+        public async Task<List<Employee>> SearchEmployeeByDesignationWithNoTeam(string designation)
+        {
+            var _Employees = await _CPMDbContext.Employees.Where(x => x.Designation.ToLower().Contains(designation) && x.TeamId == null).ToListAsync();
+            return _Employees;
+        }
+
         public async Task<bool> UpdateEmployee(int id, Employee employee)
         {
             var _Employee = await _CPMDbContext.Employees.Where(x => x.Id == id).FirstOrDefaultAsync();

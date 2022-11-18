@@ -14,5 +14,6 @@ namespace CPMS.Repository
 
         public Task<bool> UpdateEmployee(int id, Employee employee);
         public Task<bool> DeleteEmployee(int id);
+        public Task<List<Employee>> SearchEmployeeByDesignationWithNoTeam(string designation);
     }
 }

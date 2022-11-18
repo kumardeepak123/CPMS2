@@ -57,6 +57,9 @@ namespace CPMS
            
             services.AddScoped<IClientRepo, ClientRepo>();
             services.AddScoped<IProjectRepo, ProjectRepo>();
+            services.AddScoped<IEmployeeRepo, EmployeeRepo>();
+            services.AddScoped<ITeamRepo, TeamRepo>();
+
             services.AddCors(options => options.AddDefaultPolicy(
                builder => builder.WithOrigins("*").AllowAnyHeader().
                AllowAnyMethod().AllowAnyOrigin())

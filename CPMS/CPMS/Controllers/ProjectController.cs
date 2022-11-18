@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace CPMS.Controllers
-{/*
+{
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
@@ -22,13 +22,12 @@ namespace CPMS.Controllers
             _IClientRepo = iClientRepo;
         }
 
-        [HttpPost("create")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateProject(Project project)
-        {   // default ClientId is 0
-            project.ClientId = null;
-            project._Client = null;
-            var res = await _IProjectRepo.CreateProject(project);
+        [HttpPost("create-project")]
+        /* [Authorize(Roles = "Admin")]*/
+        public async Task<IActionResult> CreateProject([FromBody] Project project, string TeamIds)
+        {
+            int[] _TeamIds = TeamIds.Trim().Split(",").Select(e => Convert.ToInt32(e)).ToArray();
+            var res = await _IProjectRepo.CreateProject(project, _TeamIds);
             if (!res)
             {
                 return Ok(new { message = "Failed to create Project" });
@@ -38,11 +37,11 @@ namespace CPMS.Controllers
         }
 
         [HttpGet("details/{id}")]
-        [Authorize(Roles = "Admin,Client")]
+        /*[Authorize(Roles = "Admin,Client")]*/
         public async Task<IActionResult> GetProjectById(int id)
         {
             var project = await _IProjectRepo.GetProjectById(id);
-            if(project == null)
+            if (project == null)
             {
                 return NotFound();
             }
@@ -50,59 +49,59 @@ namespace CPMS.Controllers
             return Ok(project);
         }
 
-        [HttpGet("all")]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<IEnumerable<Project>>> GetAllPrjects()
-        {
-            var projects = await _IProjectRepo.GetAllProjects();
-            if(projects == null)
-            {
-                return NotFound();
-            }
+        /* [HttpGet("all")]
+         [Authorize(Roles = "Admin")]
+         public async Task<ActionResult<IEnumerable<Project>>> GetAllPrjects()
+         {
+             var projects = await _IProjectRepo.GetAllProjects();
+             if (projects == null)
+             {
+                 return NotFound();
+             }
 
-            return Ok(projects);
-        }
+             return Ok(projects);
+         }*/
 
-        [HttpPut("update/{id}")]
+        /*[HttpPut("update/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProject(int id, Project project)
         {
-            var res = await  _IProjectRepo.UpdateProject(id, project);
+            var res = await _IProjectRepo.UpdateProject(id, project);
             if (!res)
             {
                 return Ok(new { message = "Failed to update" });
             }
 
             return Ok(new { message = "Updated successfully" });
-        }
+        }*/
 
-        [HttpDelete("delete/{id}")]
-        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete-project/{id}")]
+        /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> DeleteProject(int id)
         {
             var res = await _IProjectRepo.DeleteProject(id);
             if (!res)
             {
-                return Ok(new { message = "Failed to delete" });
-            }
-            return Ok(new { message = "Deleted successfully" });
-        }
-
-
-        [HttpGet("client/{id}")]
-        [Authorize(Roles ="Admin,Client")]
-        public async Task<ActionResult<IEnumerable<Project>>> GetProjectsUnderClient(int id)
-        {
-            var projects = await _IProjectRepo.GetProjectsUnderClient(id);
-            if(projects == null)
-            {
                 return NotFound();
             }
-
-            return Ok(projects);
+            return Ok(new { Message = "Deleted successfully" });
         }
 
-        [HttpGet("noclient")]
+
+        /* [HttpGet("client/{id}")]
+         [Authorize(Roles = "Admin,Client")]
+         public async Task<ActionResult<IEnumerable<Project>>> GetProjectsUnderClient(int id)
+         {
+             var projects = await _IProjectRepo.GetProjectsUnderClient(id);
+             if (projects == null)
+             {
+                 return NotFound();
+             }
+
+             return Ok(projects);
+         }*/
+
+        /*[HttpGet("noclient")]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjectsWithNoClients()
         {
@@ -113,38 +112,39 @@ namespace CPMS.Controllers
             }
 
             return Ok(projects);
-        }
+        }*/
 
-        [HttpPut("update/clientIds/{id}")]
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> UpdateClientIds(int id)
-        {
-            var projects = await _IProjectRepo.GetAllProjects();
-            if (projects == null)
-            {
-                return NotFound();
-            }
+        /* [HttpPut("update/clientIds/{id}")]
+         [Authorize(Roles = "Admin")]
+         public async Task<IActionResult> UpdateClientIds(int id)
+         {
+             var projects = await _IProjectRepo.GetAllProjects();
+             if (projects == null)
+             {
+                 return NotFound();
+             }
 
-            foreach(var p in projects)
-            {
-                if(p.ClientId == id)
-                {
-                    p.ClientId = null;
-                    var res = await _IProjectRepo.UpdateProject(p.Id, p);
-                }
-                
+             *//*foreach (var p in projects)
+             {
+                 if (p.ClientId == id)
+                 {
+                     p.ClientId = null;
+                     var res = await _IProjectRepo.UpdateProject(p.Id, p);
+                 }
 
-            }
 
-            return Ok(new { message = "All Client Ids updated" });
-        }
+             }*//*
 
-      *//*  [HttpGet("demo")]
-        public async Task<IActionResult> ProjectNameWithClientName(int id)
-        {
-            var res = await _IProjectRepo.ProjectName_WithClientName(id);
-            return Ok(res);
-        }*//*
+             return Ok(new { message = "All Client Ids updated" });
+         }*/
 
-    }*/
+        /*  [HttpGet("demo")]
+          public async Task<IActionResult> ProjectNameWithClientName(int id)
+          {
+              var res = await _IProjectRepo.ProjectName_WithClientName(id);
+              return Ok(res);
+          }*//*
+
+      }*/
+    }
 }

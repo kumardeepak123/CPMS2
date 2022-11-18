@@ -18,24 +18,31 @@ namespace CPMS.Repository
             this.cPMDbContext = cPMDbContext;
         }
 
-        public async Task<bool> CreateProject(Project project)
-        {   //when admin will create this project set client id to 0(default)3
+        public async Task<bool> CreateProject(Project project, int[] TeamIds)
+        {
 
-            cPMDbContext.Projects.Add(new Project
+            var _Project = new Project
             {
                 Name = project.Name,
                 FRequirement = project.FRequirement,
                 NFRequirement = project.NFRequirement,
                 Budget = project.Budget,
                 StartDate = project.StartDate,
-                EndDate =project.EndDate,
-                Technology =project.Technology,
-               /* ClientId = null*/
-            }) ;
+                EndDate = project.EndDate,
+                Technology = project.Technology
+            };
+            cPMDbContext.Projects.Add(_Project) ;
 
             try
             {
                 await cPMDbContext.SaveChangesAsync();
+
+                foreach(var tid in TeamIds)
+                {
+                    var _Team =  await cPMDbContext.Teams.Where(x => x.Id == tid).FirstOrDefaultAsync();
+                    _Team.ProjectId = _Project.Id;
+                    await cPMDbContext.SaveChangesAsync();
+                }
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);
@@ -48,8 +55,17 @@ namespace CPMS.Repository
         {
             var project = await cPMDbContext.Projects.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (project == null) return false;
-            cPMDbContext.Projects.Remove(project);
 
+            var _Teams = await cPMDbContext.Teams.Where(x => x.ProjectId == id).ToListAsync();
+            if(_Teams != null && _Teams.Count >= 1)
+            {
+                foreach(var t in _Teams)
+                {
+                    t.ProjectId = null;
+
+                }
+            }
+            cPMDbContext.Projects.Remove(project);
             await cPMDbContext.SaveChangesAsync();
             return true;
         }
@@ -62,7 +78,22 @@ namespace CPMS.Repository
 
         public async Task<Project> GetProjectById(int id)
         {
-            var project =  await cPMDbContext.Projects.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var project = await cPMDbContext.Projects.Where(p => p.Id == id).Select(x => new Project
+            {   Id= x.Id,
+                Name = x.Name,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                Budget = x.Budget,
+                FRequirement = x.FRequirement,
+                NFRequirement = x.NFRequirement,
+                Technology = x.Technology,
+                Teams = x.Teams.Select(t => new Team {
+                    Id= t.Id,
+                    Name = t.Name,
+                    Employees= t.Employees
+                }).ToList()
+            }).FirstOrDefaultAsync();
+            
             return project;
         }
 

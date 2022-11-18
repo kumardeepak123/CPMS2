@@ -9,7 +9,7 @@ namespace CPMS.Repository
 {
     public interface IProjectRepo
     {
-        Task<bool> CreateProject(Project project);
+        Task<bool> CreateProject(Project project, int[] TeamIds);
         Task<Project> GetProjectById(int id);
         Task<IEnumerable<Project>> GetAllProjects();
         Task<bool> UpdateProject(int id, Project project);
